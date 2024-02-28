@@ -18,13 +18,20 @@ from calculate import *
 from process_audio import *
 from create_result_directory import create_result_directory
 
+
 def main():
-    audio_file = '../data/audio_heli.wav'  # Chemin relatif du fichier audio
+    laser = True #on etudier un tire du laser libs 
+    audio_file = 'bellegarde10.wav'
+    audio_file = os.path.join('../data',audio_file)  # Chemin relatif du fichier audio
     signal, sr, spl, psd = process_audio(audio_file)
     
     # Création du répertoire Resultats avec le nom de l'audio
     result_dir = create_result_directory(audio_file)
-
+    if laser == True:
+        plt_time_to_peak = plot_signal_with_first_peak(signal, sr)
+        save_figure(plt_time_to_peak, result_dir, f"{os.path.splitext(os.path.basename(audio_file))[0]}_time_to_pick.png")
+        plt_time_to_peak.show()
+        
     plt_spl = plot_spl(spl, sr)
     save_figure(plt_spl, result_dir, f"{os.path.splitext(os.path.basename(audio_file))[0]}_Lp.png")
     plt_spl.show()

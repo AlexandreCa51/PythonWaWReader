@@ -10,6 +10,7 @@ import librosa
 import librosa.display
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.signal import argrelextrema
 
 def plot_spl(spl, sr):
     plt.figure(figsize=(10, 4))
@@ -64,4 +65,25 @@ def plot_spectrogram(signal, sr):
     plt.ylabel('Fréquence (Hz)')
     plt.gca().xaxis.set_major_formatter(plt.FormatStrFormatter('%0.1f'))  # Format avec une décimale
     plt.tight_layout()
+    return plt
+
+def plot_signal_with_first_peak(signal, sr):
+    # Trouver les indices des pics dans le signal
+    plt.figure(figsize=(10, 4))
+
+    # Tracer les deux premières secondes avec une échelle de temps très détaillée
+    start_time = 0
+    end_time = 0.02  
+    start_sample = int(start_time * sr)
+    end_sample = int(end_time * sr)
+    time = np.linspace(start_time, end_time, end_sample - start_sample)
+    plt.plot(time, signal[start_sample:end_sample])
+
+    # Ajouter une grille très fine
+    plt.grid(True, which='both', linestyle=':', linewidth=0.5)
+
+    # Ajouter des labels et un titre
+    plt.xlabel('Temps (s)')
+    plt.ylabel('Amplitude')
+    plt.title('Premières milisecondes du signal audio')
     return plt
